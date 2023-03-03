@@ -8,9 +8,11 @@ KERNEL_IMAGETYPES ?= "${KERNEL_IMAGETYPE}"
 require conf/machine/include/soc-family.inc
 require conf/machine/include/arm/arch-armv8a.inc
 
-TEGRA_ESSENTIAL_EXTRA_RDEPENDS = "kernel-image u-boot-extlinux"
+TEGRA_ESSENTIAL_EXTRA_RDEPENDS = "${@'' if d.getVar('PREFERRED_PROVIDER_virtual/bootloader').startswith('cboot') else 'kernel-image u-boot-extlinux'}"
 
 INITRAMFS_IMAGE ?= "tegra-minimal-initramfs"
+IMAGE_UBOOT ?= "${@'' if d.getVar('PREFERRED_PROVIDER_virtual/bootloader').startswith('cboot') else 'u-boot'}"
+TEGRA_INITRAMFS_FSTYPES ?= "${@'' if not (d.getVar('PREFERRED_PROVIDER_virtual/bootloader').startswith('cboot') and d.getVar('INITRAMFS_IMAGE_BUNDLE') != '1') else ' cpio.gz.cboot'}"
 
 TEGRA_AUDIO_DEVICE ?= "tegrahda"
 
@@ -29,7 +31,6 @@ TEGRA_CUDA_ARCHITECTURE ?= "53"
 require conf/machine/include/tegra-common.inc
 
 L4T_BSP_NAME = "T210"
-L4T_SRCS_NAME = "sources/T210"
 L4T_BSP_PREFIX = "Jetson-210"
 L4T_DEB_SOCNAME = "t210"
 L4T_BSP_ARCH = "tegra210"
@@ -41,5 +42,6 @@ TEGRA_FAB ?= "100"
 TEGRA_BOARDSKU ?= ""
 TEGRA_BOARDREV ?= ""
 TEGRA_CHIPREV ?= "0"
-# Extracted from l4t_generate_soc_bup.sh for BOARDID=2180 and board=jetson-tx1-devkit
-TEGRA_BUPGEN_SPECS ?= "fab=100 fab=410"
+
+PARTITION_LAYOUT_EXTERNAL ?= "external_layout.xml"
+BOOT_PARTITIONS_ON_EMMC = "1"
