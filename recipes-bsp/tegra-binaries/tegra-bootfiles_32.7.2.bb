@@ -115,6 +115,12 @@ do_install:append:jetson-xavier-nx-devkit-tx2-nx() {
     sed -i -e's,num_sectors="61071360",num_sectors="30777344",' ${D}${datadir}/tegraflash/${PARTITION_LAYOUT_TEMPLATE}
 }
 
+do_install:append:jetson-xavier-nx-tx2-nx-8gb() {
+    # XXX only 16GiB eMMC on tx2-nx
+    sed -i -e's,num_sectors="61071360",num_sectors="30777344",' ${D}${datadir}/tegraflash/${PARTITION_LAYOUT_TEMPLATE}
+    install -m 0644 ${S}/tegra186-bpmp-p3636-0002-a00-00.dtb ${D}${datadir}/tegraflash/
+}
+
 do_install:append:tegra194() {
     install -m 0644 ${B}/slot_metadata.bin ${D}${datadir}/tegraflash/
     install -m 0644 ${BCT_OVERRIDE_TEMPLATE} ${D}${datadir}/tegraflash/${MACHINE}-override.cfg
