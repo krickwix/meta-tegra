@@ -27,5 +27,6 @@ INHIBIT_PACKAGE_DEBUG_SPLIT = "1"
 COMPATIBLE_MACHINE = "tegra"
 
 do_preconfigure() {
-    :
+    install ${THISDIR}/files/tegra186-mb1-bct-memcfg-p3636-0001-a01.cfg ${S}
+    install ${THISDIR}/files/tegra186-bpmp-p3636-0002-a00-00.dtb ${S}
 }
